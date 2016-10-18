@@ -1,0 +1,32 @@
+server:
+  applicationConnectors:
+  - type: http
+    port: 8090
+  adminConnectors:
+  - type: http
+    port: 8091
+
+mode: DUAL
+
+# per instance, per second payload throttle limit
+# available units, b,k,m & g
+throttleLimit: 500m
+
+storeProviderKlass: com.uber.buckcache.datastore.impl.ignite.IgniteDataStoreProvider
+
+storeProviderConfig:
+  config: 
+    multicastIP: 228.10.10.157
+    multicastPort: 6734
+    hostIPs: 
+      - 127.0.0.1
+    cacheMode: PARTITIONED
+    cacheBackupCount: 1
+    expirationTimeUnit: DAYS
+    expirationTimeValue: 7
+    atomicSequencereserveSize: 10000
+    offHeapStorageSize: 40g # 40GB
+
+statsd:
+  enabled: false
+

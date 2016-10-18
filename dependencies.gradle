@@ -1,0 +1,32 @@
+def versions = [
+        igniteVersion: "1.7.0",
+        dropwizardVersion: "1.0.0",
+        junitVersion: "4.12",
+        httpClientVersion: "4.5.2",
+        httpCoreVersion: "4.4.4",
+        jacksonVersion: "2.8.2",
+        uuidGenVersion: "3.1.3",
+        statsdClientVersion: "3.0.1",
+]
+
+def build = [
+        oneJar   : "com.github.rholder:gradle-one-jar:1.0.4",
+        cobertura: "net.saliman:gradle-cobertura-plugin:2.3.2"
+]
+
+def external = [
+        dropwizard        : "io.dropwizard:dropwizard-core:${versions.dropwizardVersion}",
+        ignite            : "org.apache.ignite:ignite-core:${versions.igniteVersion}",
+        junit             : "junit:junit:${versions.junitVersion}",
+        httpClient        : "org.apache.httpcomponents:httpclient:${versions.httpClientVersion}",
+        httpCore          : "org.apache.httpcomponents:httpcore:${versions.httpCoreVersion}",
+        jackson           : "com.fasterxml.jackson.core:jackson-databind:${versions.jacksonVersion}",
+        uuidGen           : "com.fasterxml.uuid:java-uuid-generator:${versions.uuidGenVersion}",
+        statsdClient      : "com.timgroup:java-statsd-client:${versions.statsdClientVersion}",
+]
+
+ext.deps = [
+        "build"   : build,
+        "external": external,
+        "versions": versions
+]

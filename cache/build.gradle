@@ -1,0 +1,39 @@
+apply plugin: 'java'
+apply plugin: 'gradle-one-jar'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'cobertura'
+
+group = 'com.uber.buck'
+version = '1.0.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName = 'com.uber.buckcache.BuckCacheApplication'
+
+dependencies {
+    compile deps.external.dropwizard
+    compile deps.external.ignite
+    compile deps.external.junit
+    compile deps.external.httpClient
+    compile deps.external.jackson
+    compile deps.external.uuidGen
+    compile deps.external.httpCore
+    compile deps.external.statsdClient
+}
+
+task oneJar(type: OneJar) {
+    mainClass = mainClassName
+    additionalDir = file('src/main/resources/')
+}
+
+artifacts {
+    oneJar
+}
+
+run {
+    args 'server', './src/dist/config/development.yml'
+}
+
+build.dependsOn oneJar

@@ -1,0 +1,19 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    apply from: rootProject.file('dependencies.gradle')
+
+    dependencies {
+        classpath deps.build.oneJar
+        classpath deps.build.cobertura
+    }
+}
+
+allprojects { project ->
+    project.apply from: rootProject.file('dependencies.gradle')
+    repositories {
+        jcenter()
+    }
+}
