@@ -33,8 +33,4 @@ artifacts {
     distJar
 }
 
-run {
-    args 'server', './src/dist/config/development.yml'
-}
-
 build.dependsOn distJar

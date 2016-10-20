@@ -1,24 +1,27 @@
-# Buck HTTP REST API Cache
+# Buck HTTP Cache As a service. 
 
-An implementation of [Buck's HTTP Cache API](https://buckbuild.com/concept/http_cache_api.html).
+An Implementation of [Buck's HTTP Cache API](https://buckbuild.com/concept/http_cache_api.html) as a distributed cache as a service. 
 
-## Installation / Running
+## Quick start
 
-To run this code, clone the repository, package the server with Maven, and run the output.
+### From Source
 
 ```
+# make sure that JAVA_HOME is set. (please use jdk8)
 git clone https://github.com/uber/buck-http-cache.git
 cd buck-http-cache
-./run_buck_cache_client.sh
+./run_buck_cache_client.sh standalone 
 ```
 
-This starts a server, using port `8080`, with an embedded Hazelcast server, which is ideal for testing. To use this 
-server locally with Buck, add the following entry to your `.buckconfig.local` file:
+### From Distribution
+
+This starts a server, using http resource port as `6457`. Under the hood we are using [Apache Ignite](http://https://ignite.apache.org/) as the Cache data grid. 
+In order to use this http cache in your app to build, add the following entry to your `.buckconfig.local` file:
 
 ```
 [cache]
   mode = http
-  http_url = http://localhost:8080
+  http_url = http://localhost:6457
   http_mode = readwrite
   http_max_concurrent_writes = 1
 ```
@@ -27,8 +30,8 @@ This is the most basic way of starting the cache locally. To test it out, you ca
 cache and build again. For example:
 
 ```
-rm -rf buck-out/ .buckd/ && buck test tasklib
-rm -rf buck-out/ .buckd/ && buck test tasklib
+rm -rf buck-out/ .buckd/ && <RUN_YOUR_BUCK_TARGET>
+rm -rf buck-out/ .buckd/ && <RUN_YOUR_BUCK_TARGET>
 ```
 
 ## Deployment
