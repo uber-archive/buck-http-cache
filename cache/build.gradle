@@ -1,10 +1,11 @@
 apply plugin: 'java'
 apply plugin: 'gradle-one-jar'
+apply plugin: 'distribution'
 apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'cobertura'
 
-group = 'com.uber.buck'
+group = 'com.uber'
 version = '1.0.0'
 
 sourceCompatibility = 1.8
@@ -23,17 +24,17 @@ dependencies {
     compile deps.external.statsdClient
 }
 
-task oneJar(type: OneJar) {
+task distJar(type: OneJar) {
     mainClass = mainClassName
     additionalDir = file('src/main/resources/')
 }
 
 artifacts {
-    oneJar
+    distJar
 }
 
 run {
     args 'server', './src/dist/config/development.yml'
 }
 
-build.dependsOn oneJar
+build.dependsOn distJar

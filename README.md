@@ -7,10 +7,9 @@ An implementation of [Buck's HTTP Cache API](https://buckbuild.com/concept/http_
 To run this code, clone the repository, package the server with Maven, and run the output.
 
 ```
-git clone gitolite@code.uber.internal:mobile/infra/buck-cache-server buck-cache-server
-cd buck-cache-server
-./gradlew oneJar
-java -jar cache/build/libs/cache-1.0.0-standalone.jar server
+git clone https://github.com/uber/buck-http-cache.git
+cd buck-http-cache
+./run_buck_cache_client.sh
 ```
 
 This starts a server, using port `8080`, with an embedded Hazelcast server, which is ideal for testing. To use this 
