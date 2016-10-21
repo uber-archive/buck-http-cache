@@ -38,7 +38,7 @@ hostIPs:
 ```
 
 Now you are ready to start the cache in all three hosts. The data will be equally distributed across all three nodes, and you can query any node to fetch the data. Each node acts as a broker and as a in-memory data base. 
-We will enable zookeeper based node discovery soon. At which point we won't have to manually add IPs to the condig. Just pointing to a common zk cluster should do the trick. 
+We will enable zookeeper based node discovery soon. At which point we won't have to manually add IPs to the config. Just pointing to a common zk cluster should do the trick. 
 
 ## Usage
 
