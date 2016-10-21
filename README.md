@@ -47,7 +47,7 @@ The cache server by default runs on port `6457`. Under the hood it uses [Apache 
 ```
 [cache]
   mode = http
-  http_url = http://buck-cache-android.uber.internal:6457
+  http_url = http://your-server-address:6457
   http_mode = http://localhost:6457
 ```
 
