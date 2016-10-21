@@ -4,7 +4,10 @@ An Implementation of [Buck's HTTP Cache API](https://buckbuild.com/concept/http_
 
 ## Quick start
 
-### From Source
+### Standalone mode
+Standalone mode starts this in a single node mode. For most usecases, this should work. Lets say you only have 1 project, with tens of developers and a few CI tasks, then this setup should be more than enough. 
+
+#### From Source
 
 ```
 # make sure that JAVA_HOME is set. (please use jdk8)
@@ -13,9 +16,33 @@ cd buck-http-cache
 ./run_buck_cache_client.sh standalone 
 ```
 
-### From Distribution
+#### From Distribution
 
-This starts a server, using http resource port as `6457`. Under the hood we are using [Apache Ignite](http://https://ignite.apache.org/) as the Cache data grid. 
+```
+# make sure that JAVA_HOME is set. (please use jdk8)
+wget https://github.com/uber/buck-http-cache/raw/dist/releases/cache-1.0.0.zip 
+unzip cache-1.0.0.zip
+./bin/cache server config/standalone.yml
+```
+
+
+### Cluster mode
+If you have many users, projects that will use the cache, then chances are that standalone mode won't work for you. In this case you will need to setup a distributed cache. Lets say you want to deploy the cache to three machines (IP1, IP2, IP3). Update config file standalone.yml and add the following. 
+
+```
+multicastPort: 6734
+hostIPs:
+  - <IP1>
+  - <IP2>
+  - <IP3>
+```
+
+Now you are ready to start the cache in all three hosts. The data will be equally distributed across all three nodes, and you can query any node to fetch the data. Each node acts as a broker and as a in-memory data base. 
+
+
+## Using the HTTP Cache. 
+
+The cache server by default runs on port `6457`. Under the hood we are using [Apache Ignite](http://https://ignite.apache.org/) as the Cache data grid. 
 In order to use this http cache in your app to build, add the following entry to your `.buckconfig.local` file:
 
 ```
@@ -34,30 +61,14 @@ rm -rf buck-out/ .buckd/ && <RUN_YOUR_BUCK_TARGET>
 rm -rf buck-out/ .buckd/ && <RUN_YOUR_BUCK_TARGET>
 ```
 
-## Deployment
 
-This cache can run in three modes: `CLIENT`, `SERVER`, and `DATABASE_ONLY`. The modes operate as follows:
-  - `CLIENT`: Starts up a Hazelcast cache in client mode and exposes it with the Buck REST API. This means that build 
-    artifacts are not stored locally and this instance is not a part of the distributed cache. 
-  - `SERVER`: Starts up a Hazelcast cache in server mode and also exposes it with the Buck REST API. This means that
-    build artifacts are stored locally and this instance forms a part of the distributed cache. Depending on replication
-    strategies, shutting this instance down may lose part of the cache.
-  - `DATABASE_ONLY`: Starts up a Hazelcast cache in server mode, but does not expose it via the Buck REST API. To 
-    connect to this instance, use a separate instance in `CLIENT` mode.
-    
-Since Hazelcast uses multicast to auto-discover other nodes, the recommended deployment strategy is to have multiple
-instances running in `DATABASE_ONLY` mode on caching servers and start instances locally in `CLIENT` mode on building
-servers. The `CLIENT` instances will auto-connect to the `DATABASE_ONLY` instances. Buck can be configured to talk to 
-the local `CLIENT` instance, which will take care of auto-discovering the other instances.
+The above mentioned way of configuring the cache URL works if you are in standlone mode. If you are running the cache in cluster mode, then you have two options. 
 
-## Configuration
+* Setup a loadbalancer in front of the nodes. 
+* Randomly hit any one of the host. 
 
-There are three configuration files:
-  - `configuration.yml`: This controls the server configuration. It can be used to [configure 
-    Dropwizard](http://www.dropwizard.io/0.7.1/docs/manual/configuration.html) or to configure the mode the cache 
-    operates in.
-  - `hazelcast-client.xml`: When running in `CLIENT` mode, this configuration is used to connect the Hazelcast client.
-    The configuration is [documented by Hazelcast](http://docs.hazelcast.org/docs/3.5/manual/html/javaclientconfiguration.html).
-    This can be used to connect to explicit servers, if auto-discovery does not work (e.g., in the case of NAT translation).
-  - `hazelcast-server.xml`: When running in `SERVER` or `DATABASE_ONLY` mode, the configuration used for the Hazelcast
-    server. This connfiguration is [documented by Hazelcast](http://docs.hazelcast.org/docs/3.5/manual/html/configuringhazelcast.html).
+If you pick option two then you have to do something like this. Everytime you run the command you can pick one of the hosts at random. We suggest you setup a loadbalancer and use this as a fall back option. 
+
+```
+buck --config cache.http_url=http://${CACHE_SERVER}:${CACHE_PORT} build
+```
