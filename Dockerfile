@@ -1,6 +1,6 @@
 FROM openjdk:8
 
-MAINTAINER Dhaval Patel dhaval2025@gmail.com;
+MAINTAINER Dhaval Patel dhaval@uber.com;
 
 RUN git clone https://github.com/uber/buck-http-cache.git
 
