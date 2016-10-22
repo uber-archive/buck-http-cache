@@ -44,7 +44,7 @@ We will enable zookeeper based node discovery soon. At which point we won't have
 
 The cache server by default runs on port `6457`. Under the hood it uses [Apache Ignite](http://https://ignite.apache.org/) as the cache data grid.  In order to use this http cache in your project, add the following to your `buckconfig`:
 
-```buckconfig
+```ini
 [cache]
   mode = http
   http_url = http://your-server-address:6457
