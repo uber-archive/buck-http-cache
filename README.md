@@ -10,7 +10,7 @@ Standalone mode starts this in a single node mode. For most usecases, this shoul
 
 #### From Source
 
-```
+```bash
 # make sure that JAVA_HOME is set. (please use jdk8)
 git clone https://github.com/uber/buck-http-cache.git
 cd buck-http-cache
@@ -19,7 +19,7 @@ cd buck-http-cache
 
 #### From Distribution
 
-```
+```bash
 # make sure that JAVA_HOME is set. (please use jdk8)
 wget https://github.com/uber/buck-http-cache/raw/dist/releases/cache-1.0.0.zip 
 unzip cache-1.0.0.zip
@@ -29,7 +29,7 @@ unzip cache-1.0.0.zip
 ### Cluster mode
 If you have many users, projects that will use the cache, then chances are that standalone mode won't work for you. In this case you will need to setup a distributed cache. Lets say you want to deploy the cache to three machines (IP1, IP2, IP3). Update config file standalone.yml and add the following. 
 
-```
+```yml
 multicastPort: 6734
 hostIPs:
   - <IP1>
@@ -44,7 +44,7 @@ We will enable zookeeper based node discovery soon. At which point we won't have
 
 The cache server by default runs on port `6457`. Under the hood it uses [Apache Ignite](http://https://ignite.apache.org/) as the cache data grid.  In order to use this http cache in your project, add the following to your `buckconfig`:
 
-```
+```buckconfig
 [cache]
   mode = http
   http_url = http://your-server-address:6457
@@ -55,7 +55,7 @@ This is the most basic way of starting the cache locally. For additional options
 
 As an alternative, if you use [Okbuck](https://github.com/uber/okbuck) to build your gradle project with buck, you can modify `buckw` to randomly choose a server on every invocation
 
-```
+```bash
 CACHE_SERVER=$[ (( $RANDOM % 3 )) + 1 ]
 CACHE_URL="buck-cache-server${CACHE_SERVER}:6457"
 EXTRA_BUCK_CONFIG="--config cache.http_url=http://${CACHE_URL}"
