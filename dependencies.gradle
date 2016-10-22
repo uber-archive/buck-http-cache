@@ -11,8 +11,7 @@ def versions = [
 
 def build = [
         oneJar   : "com.github.rholder:gradle-one-jar:1.0.4",
-        cobertura: "net.saliman:gradle-cobertura-plugin:2.3.2",
-        license: "nl.javadude.gradle.plugins:license-gradle-plugin:0.10.0",
+        cobertura: "net.saliman:gradle-cobertura-plugin:2.3.2"
 ]
 
 def external = [

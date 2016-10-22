@@ -4,7 +4,6 @@ apply plugin: 'distribution'
 apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'cobertura'
-apply plugin: 'license'
 
 group = 'com.uber'
 version = '1.0.0'
@@ -32,12 +31,6 @@ task distJar(type: OneJar) {
 
 artifacts {
     distJar
-}
-
-license {
-    header rootProject.file('LICENSE')
-    strictCheck false
-    includes(["**/*.java", "**/*.yaml", "**/*.yml", "*.gradle", "**/*.gradle"])
 }
 
 build.dependsOn distJar
