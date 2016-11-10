@@ -22,6 +22,7 @@ dependencies {
     compile deps.external.uuidGen
     compile deps.external.httpCore
     compile deps.external.statsdClient
+    compile deps.external.dns
 }
 
 task distJar(type: OneJar) {
