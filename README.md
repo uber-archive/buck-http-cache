@@ -14,7 +14,7 @@ Standalone mode starts this in a single node mode. For most usecases, this shoul
 # make sure that JAVA_HOME is set. (please use jdk8)
 git clone https://github.com/uber/buck-http-cache.git
 cd buck-http-cache
-./run_buck_cache_client.sh standalone 
+./run_buck_cache_client.sh development 
 ```
 
 #### From Distribution
@@ -23,7 +23,7 @@ cd buck-http-cache
 # make sure that JAVA_HOME is set. (please use jdk8)
 wget https://github.com/uber/buck-http-cache/raw/dist/releases/cache-1.0.0.zip 
 unzip cache-1.0.0.zip
-./bin/cache server config/standalone.yml
+./bin/cache server config/development.yml
 ```
 
 ### Cluster mode
