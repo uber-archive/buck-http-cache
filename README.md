@@ -48,7 +48,7 @@ The cache server by default runs on port `6457`. Under the hood it uses [Apache 
 [cache]
   mode = http
   http_url = http://your-server-address:6457
-  http_mode = http://localhost:6457
+  http_mode = readwrite
 ```
 
 This is the most basic way of starting the cache locally. For additional options, see [buckconfig](https://buckbuild.com/concept/buckconfig.html#cache). This works in standlone mode. If you are running the cache in cluster mode, then you may want to setup a loadbalancer in front of the nodes.
