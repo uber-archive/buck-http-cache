@@ -46,7 +46,8 @@ public class IgniteInstance {
   public IgniteInstance(CacheInstanceMode mode, IgniteConfig config) {
     this.config = config;
     this.igniteConfiguration = new IgniteConfigurationBuilder()
-        .addMulticastBasedDiscrovery(this.config.getMulticastIP(), this.config.getMulticastPort(), this.config.getHostIPs())
+        .addMulticastBasedDiscrovery(this.config.getMulticastIP(), this.config.getMulticastPort(),
+            this.config.getHostIPs(), this.config.getDnsLookupAddress())
         .addCacheConfiguration(this.config.getCacheMode(), this.config.getCacheBackupCount(),
             this.config.getExpirationTimeUnit(), this.config.getExpirationTimeValue(),
             this.config.getOffHeapStorageSize(), KEYS_CACHE_NAME, KEYS_REVERSE_CACHE_NAME, METADATA_CACHE_NAME)
@@ -55,7 +56,7 @@ public class IgniteInstance {
     logger.info("isClientMode : {}", mode == CacheInstanceMode.CLIENT);
     Ignition.setClientMode(mode == CacheInstanceMode.CLIENT);
     ignite = Ignition.start(igniteConfiguration);
-    
+
     cacheKeys = ignite.cluster().ignite().getOrCreateCache(KEYS_CACHE_NAME);
     reverseCacheKeys = ignite.cluster().ignite().getOrCreateCache(KEYS_REVERSE_CACHE_NAME);
     buckDataCache = ignite.cluster().ignite().getOrCreateCache(METADATA_CACHE_NAME);

@@ -28,6 +28,8 @@ public class IgniteConfig {
   private String offHeapStorageSize;
   @Nonnull
   private List<String> hostIPs;
+  @Nonnull
+  private String dnsLookupAddress;
 
   public List<String> getHostIPs() {
     return hostIPs;
@@ -99,6 +101,14 @@ public class IgniteConfig {
 
   public void setAtomicSequencereserveSize(Integer atomicSequencereserveSize) {
     this.atomicSequencereserveSize = atomicSequencereserveSize;
+  }
+
+  public String getDnsLookupAddress() {
+    return dnsLookupAddress;
+  }
+
+  public void setDnsLookupAddress(String dnsLookupAddress) {
+    this.dnsLookupAddress = dnsLookupAddress;
   }
 
   public String toString() {

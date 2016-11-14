@@ -19,6 +19,7 @@ storeProviderConfig:
     multicastIP: 228.10.10.157
     multicastPort: 6734
     hostIPs:
+    dnsLookupAddress:
     cacheMode: PARTITIONED
     cacheBackupCount: 1
     expirationTimeUnit: DAYS
