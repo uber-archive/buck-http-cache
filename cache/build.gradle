@@ -23,6 +23,7 @@ dependencies {
     compile deps.external.httpCore
     compile deps.external.statsdClient
     compile deps.external.dns
+    testCompile 'org.mockito:mockito-all:1.9.5'
 }
 
 task distJar(type: OneJar) {

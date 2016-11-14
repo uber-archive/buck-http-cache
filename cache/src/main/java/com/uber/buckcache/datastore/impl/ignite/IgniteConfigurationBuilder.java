@@ -6,8 +6,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.cache.expiry.Duration;
 import javax.cache.expiry.TouchedExpiryPolicy;
-import javax.validation.ValidationException;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.spotify.dns.DnsSrvResolvers;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ignite.cache.CacheMemoryMode;
 import org.apache.ignite.cache.CacheMode;
@@ -20,37 +21,43 @@ import org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder;
 
 import com.google.common.base.Strings;
 import com.spotify.dns.DnsSrvResolver;
-import com.spotify.dns.DnsSrvResolvers;
 import com.spotify.dns.LookupResult;
 import com.uber.buckcache.utils.BytesRateLimiter.BIT_UNIT;
 
 public class IgniteConfigurationBuilder {
 
   private IgniteConfiguration igniteConfiguration;
+  private final DnsSrvResolver dnsResolver;
 
   public IgniteConfigurationBuilder() {
+    this(DnsSrvResolvers.newBuilder()
+        .retainingDataOnFailures(true)
+        .build());
+    igniteConfiguration = new IgniteConfiguration();
+  }
+
+  protected IgniteConfigurationBuilder(DnsSrvResolver dnsResolver) {
+    this.dnsResolver = dnsResolver;
     igniteConfiguration = new IgniteConfiguration();
   }
 
   public IgniteConfigurationBuilder addMulticastBasedDiscrovery(String multicastIP, Integer multicastPort, List<String> hostIPs, String dnsLookupAddress) {
+    if (hostIPs == null) {
+      hostIPs = new ArrayList<String>();
+    }
+
     TcpDiscoverySpi spi = new TcpDiscoverySpi();
 
     TcpDiscoveryVmIpFinder ipFinder = new TcpDiscoveryMulticastIpFinder();
     ((TcpDiscoveryMulticastIpFinder) ipFinder).setMulticastGroup(multicastIP);
     ((TcpDiscoveryMulticastIpFinder) ipFinder).setMulticastPort(multicastPort);
 
-    // not allow providing both hostIPs and dnsLookupAddress
-    boolean hasHostIPs = hostIPs != null && !hostIPs.isEmpty();
     boolean hasDNSLookupAddress = !Strings.isNullOrEmpty(dnsLookupAddress);
-    if (hasHostIPs && hasDNSLookupAddress) {
-      throw new ValidationException("hostIPs and dnsLookupAddress can't be specified together!");
-    }
 
     if (hasDNSLookupAddress) {
-      ((TcpDiscoveryMulticastIpFinder) ipFinder).setAddresses(this.resolveAddressByDNS(dnsLookupAddress));
-    } else {
-      ((TcpDiscoveryMulticastIpFinder) ipFinder).setAddresses(hostIPs);
+      hostIPs.addAll(this.resolveAddressByDNS(dnsLookupAddress));
     }
+    ((TcpDiscoveryMulticastIpFinder) ipFinder).setAddresses(hostIPs);
     spi.setIpFinder(ipFinder);
 
     // Override default discovery SPI.
@@ -99,10 +106,7 @@ public class IgniteConfigurationBuilder {
 
   private List<String> resolveAddressByDNS(String dnsLookupAddress) {
      List<String> address = new ArrayList<String>();
-     DnsSrvResolver resolver = DnsSrvResolvers.newBuilder()
-         .retainingDataOnFailures(true)
-         .build();
-     for (LookupResult node : resolver.resolve(dnsLookupAddress)) {
+     for (LookupResult node : dnsResolver.resolve(dnsLookupAddress)) {
        address.add(node.host());
      }
      return address;
