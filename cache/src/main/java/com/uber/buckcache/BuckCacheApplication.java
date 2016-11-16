@@ -1,5 +1,7 @@
 package com.uber.buckcache;
 
+import com.uber.buckcache.auth.HttpHeaderAuthFilter;
+import io.dropwizard.auth.AuthDynamicFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +71,10 @@ public class BuckCacheApplication extends Application<BuckCacheConfiguration> {
 
       final RootResource rootResource = new RootResource();
       environment.jersey().register(rootResource);
+      
+      environment.jersey().register(new AuthDynamicFeature(
+          new HttpHeaderAuthFilter(
+              configuration.getAuthorizationConfig().getAuthorizedTokens())));
     }
   }
 }

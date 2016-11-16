@@ -30,6 +30,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -37,6 +38,7 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import io.dropwizard.auth.Auth;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -111,7 +113,8 @@ public class BuckCacheResource {
   @Path("key")
   @Consumes(MediaType.APPLICATION_OCTET_STREAM)
   public Response addArtifactToCache(PutCacheEntry putCacheEntry,
-                                     @HeaderParam(X_CACHE_EXPIRY_SECONDS) String cacheExpirySeconds) throws Exception {
+                                     @HeaderParam(X_CACHE_EXPIRY_SECONDS) String cacheExpirySeconds,
+                                     @Auth @HeaderParam(HttpHeaders.AUTHORIZATION) String auth) throws Exception {
     StatsDClient.get().count(PUT_CALL_COUNT, 1L);
 
     long start = System.currentTimeMillis();

@@ -15,6 +15,7 @@ mainClassName = 'com.uber.buckcache.BuckCacheApplication'
 
 dependencies {
     compile deps.external.dropwizard
+    compile deps.external.dropwizardAuth
     compile deps.external.ignite
     compile deps.external.junit
     compile deps.external.httpClient
