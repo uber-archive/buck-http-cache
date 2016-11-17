@@ -28,7 +28,7 @@ storeProviderConfig:
     offHeapStorageSize: 40g # 40GB
 
 authenticationConfig:
-  authenticatedTokens:
+  tokens:
 
 statsd:
   enabled: true

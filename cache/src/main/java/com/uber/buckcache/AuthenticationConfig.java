@@ -5,13 +5,11 @@ import javax.annotation.Nonnull;
 
 public class AuthenticationConfig {
   @Nonnull
-  private List<String> authenticatedTokens;
+  private List<String> tokens;
 
-  public List<String> getAuthenticatedTokens() {
-    return authenticatedTokens;
+  public List<String> getTokens() {
+    return tokens;
   }
 
-  public void setAuthenticatedTokens(List<String> authenticatedTokens) {
-    this.authenticatedTokens = authenticatedTokens;
-  }
+  public void setTokens(List<String> tokens) { this.tokens = tokens; }
 }

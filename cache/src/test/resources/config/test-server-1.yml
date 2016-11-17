@@ -13,7 +13,7 @@ mode: DUAL
 throttleLimit: 500m
 
 authenticationConfig:
-  authenticatedTokens:
+  tokens:
     - testToken
 
 storeProviderKlass: com.uber.buckcache.datastore.impl.ignite.IgniteDataStoreProvider
