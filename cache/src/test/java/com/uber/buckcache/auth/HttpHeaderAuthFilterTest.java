@@ -32,22 +32,22 @@ public class HttpHeaderAuthFilterTest {
   }
 
   @Test
-  public void testSuccessWithoutAuthorizedToken() throws IOException {
+  public void testSuccessWithoutAuthenticatedToken() throws IOException {
     (new HttpHeaderAuthFilter()).filter(mockRequestContextWithHeader);
   }
 
   @Test
-  public void testSuccessWithAuthorizedToken() throws IOException {
+  public void testSuccessWithAuthenticatedToken() throws IOException {
     (new HttpHeaderAuthFilter(Arrays.asList("testToken"))).filter(mockRequestContextWithHeader);
   }
 
   @Test(expected=NotAuthorizedException.class)
-  public void testFailWithIncorrectAuthorizedToken() throws IOException {
+  public void testFailWithIncorrectAuthenticatedToken() throws IOException {
     (new HttpHeaderAuthFilter(Arrays.asList("testTokenFail"))).filter(mockRequestContextWithHeader);
   }
 
   @Test(expected=NotAuthorizedException.class)
-  public void testFailWithoutAuthorizedToken() throws IOException {
+  public void testFailWithoutAuthenticatedToken() throws IOException {
     (new HttpHeaderAuthFilter(Arrays.asList("testToken"))).filter(mockRequestContextWithoutHeader);
   }
 }

@@ -29,7 +29,7 @@ public class SingleServerIntegrationTest {
   private static final Logger logger = LoggerFactory.getLogger(SingleServerIntegrationTest.class);
 
   private static CloseableHttpClient httpclient;
-  private String authorizedToken = "testToken";
+  private String authenticatedToken = "testToken";
 
   @BeforeClass
   public static void setup() throws Exception {
@@ -49,7 +49,7 @@ public class SingleServerIntegrationTest {
       HttpPut httpput = new HttpPut("http://localhost:8090/artifacts/key");
       HttpEntity e = new FileEntity(dataFile);
       httpput.setEntity(e);
-      httpput.setHeader(HttpHeaders.AUTHORIZATION, authorizedToken);
+      httpput.setHeader(HttpHeaders.AUTHORIZATION, authenticatedToken);
       CloseableHttpResponse putResponse = httpclient.execute(httpput);
       try {
         Assert.assertEquals(202, putResponse.getStatusLine().getStatusCode());
@@ -84,7 +84,7 @@ public class SingleServerIntegrationTest {
       HttpPut httpput = new HttpPut("http://localhost:8090/artifacts/key");
       HttpEntity e = new FileEntity(dataFile);
       httpput.setEntity(e);
-      httpput.setHeader(HttpHeaders.AUTHORIZATION, authorizedToken);
+      httpput.setHeader(HttpHeaders.AUTHORIZATION, authenticatedToken);
       CloseableHttpResponse putResponse = httpclient.execute(httpput);
       try {
         Assert.assertEquals(202, putResponse.getStatusLine().getStatusCode());
@@ -147,7 +147,7 @@ public class SingleServerIntegrationTest {
       HttpPut httpput = new HttpPut("http://localhost:8090/artifacts/key");
       HttpEntity e = new FileEntity(dataFile);
       httpput.setEntity(e);
-      httpput.setHeader(HttpHeaders.AUTHORIZATION, authorizedToken);
+      httpput.setHeader(HttpHeaders.AUTHORIZATION, authenticatedToken);
       CloseableHttpResponse putResponse = httpclient.execute(httpput);
       try {
         Assert.assertEquals(202, putResponse.getStatusLine().getStatusCode());
@@ -181,7 +181,7 @@ public class SingleServerIntegrationTest {
     HttpPut httpput = new HttpPut("http://localhost:8090/artifacts/key");
     HttpEntity e = new FileEntity(dataFile);
     httpput.setEntity(e);
-    httpput.setHeader(HttpHeaders.AUTHORIZATION, authorizedToken);
+    httpput.setHeader(HttpHeaders.AUTHORIZATION, authenticatedToken);
     httpput.addHeader(new BasicHeader("X-Cache-Expiry-Seconds", "0")); // Expire keys immediately
     CloseableHttpResponse putResponse = httpclient.execute(httpput);
     try {

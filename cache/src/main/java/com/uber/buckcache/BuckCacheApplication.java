@@ -74,7 +74,7 @@ public class BuckCacheApplication extends Application<BuckCacheConfiguration> {
 
       environment.jersey().register(new AuthDynamicFeature(
           new HttpHeaderAuthFilter(
-              configuration.getAuthorizationConfig().getAuthorizedTokens())));
+              configuration.getAuthenticationConfig().getAuthenticatedTokens())));
     }
   }
 }
