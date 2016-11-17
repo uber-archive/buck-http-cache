@@ -11,35 +11,43 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class HttpHeaderAuthFilterTest {
-  private static ContainerRequestContext mockRequestContext;
-  private static MultivaluedMap mockHeaders;
+  private static ContainerRequestContext mockRequestContextWithHeader;
+  private static ContainerRequestContext mockRequestContextWithoutHeader;
 
   @BeforeClass
   public static void setup() throws Exception {
-    mockRequestContext = mock(ContainerRequestContext.class);
-    mockHeaders = new MultivaluedHashMap<String, String>();
+    mockRequestContextWithHeader = mock(ContainerRequestContext.class);
+    MultivaluedMap mockHeaders = new MultivaluedHashMap<String, String>();
     mockHeaders.add(HttpHeaders.AUTHORIZATION, "testToken");
-    when(mockRequestContext.getHeaders()).thenReturn(mockHeaders);
+    when(mockRequestContextWithHeader.getHeaders()).thenReturn(mockHeaders);
+
+    mockRequestContextWithoutHeader = mock(ContainerRequestContext.class);
+    when(mockRequestContextWithoutHeader.getHeaders()).thenReturn(
+        new MultivaluedHashMap<String, String>());
   }
 
   @Test
   public void testSuccessWithoutAuthorizedToken() throws IOException {
-    (new HttpHeaderAuthFilter()).filter(mockRequestContext);
+    (new HttpHeaderAuthFilter()).filter(mockRequestContextWithHeader);
   }
 
   @Test
   public void testSuccessWithAuthorizedToken() throws IOException {
-    (new HttpHeaderAuthFilter(Arrays.asList("testToken"))).filter(mockRequestContext);
+    (new HttpHeaderAuthFilter(Arrays.asList("testToken"))).filter(mockRequestContextWithHeader);
   }
 
   @Test(expected=NotAuthorizedException.class)
-  public void testFailWithAuthorizedToken() throws IOException {
-    (new HttpHeaderAuthFilter(Arrays.asList("testTokenFail"))).filter(mockRequestContext);
+  public void testFailWithIncorrectAuthorizedToken() throws IOException {
+    (new HttpHeaderAuthFilter(Arrays.asList("testTokenFail"))).filter(mockRequestContextWithHeader);
+  }
+
+  @Test(expected=NotAuthorizedException.class)
+  public void testFailWithoutAuthorizedToken() throws IOException {
+    (new HttpHeaderAuthFilter(Arrays.asList("testToken"))).filter(mockRequestContextWithoutHeader);
   }
 }

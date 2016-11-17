@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 import java.util.concurrent.TimeUnit;
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -110,11 +111,11 @@ public class BuckCacheResource {
   }
 
   @PUT
+  @PermitAll
   @Path("key")
   @Consumes(MediaType.APPLICATION_OCTET_STREAM)
   public Response addArtifactToCache(PutCacheEntry putCacheEntry,
-                                     @HeaderParam(X_CACHE_EXPIRY_SECONDS) String cacheExpirySeconds,
-                                     @Auth @HeaderParam(HttpHeaders.AUTHORIZATION) String auth) throws Exception {
+                                     @HeaderParam(X_CACHE_EXPIRY_SECONDS) String cacheExpirySeconds) throws Exception {
     StatsDClient.get().count(PUT_CALL_COUNT, 1L);
 
     long start = System.currentTimeMillis();

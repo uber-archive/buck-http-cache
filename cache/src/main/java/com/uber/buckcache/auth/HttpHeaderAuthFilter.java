@@ -13,22 +13,22 @@ import javax.ws.rs.core.HttpHeaders;
 @Priority(Priorities.AUTHENTICATION)
 public class HttpHeaderAuthFilter extends AuthFilter {
 
-  protected List<String> authorizedToken;
+  protected List<String> authorizedTokens;
 
   protected HttpHeaderAuthFilter() {}
-  public HttpHeaderAuthFilter(List<String> authorizedToken) {
-    this.authorizedToken = authorizedToken;
+  public HttpHeaderAuthFilter(List<String> authorizedTokens) {
+    this.authorizedTokens = authorizedTokens;
   }
 
   @Override
   public void filter(final ContainerRequestContext requestContext) throws IOException {
-    if (authorizedToken == null) {
+    if (authorizedTokens == null) {
       return ;
     }
 
     String token = requestContext.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
-    if (!authorizedToken.contains(token)) {
+    if (token == null || !authorizedTokens.contains(token)) {
       throw new NotAuthorizedException("Unauthorized");
     }
   }

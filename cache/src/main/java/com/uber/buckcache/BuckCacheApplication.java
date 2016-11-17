@@ -71,7 +71,7 @@ public class BuckCacheApplication extends Application<BuckCacheConfiguration> {
 
       final RootResource rootResource = new RootResource();
       environment.jersey().register(rootResource);
-      
+
       environment.jersey().register(new AuthDynamicFeature(
           new HttpHeaderAuthFilter(
               configuration.getAuthorizationConfig().getAuthorizedTokens())));
