@@ -23,10 +23,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.core.HttpHeaders;
+
 public class SingleServerIntegrationTest {
   private static final Logger logger = LoggerFactory.getLogger(SingleServerIntegrationTest.class);
 
   private static CloseableHttpClient httpclient;
+  private String authenticatedToken = "testToken";
 
   @BeforeClass
   public static void setup() throws Exception {
@@ -46,12 +49,29 @@ public class SingleServerIntegrationTest {
       HttpPut httpput = new HttpPut("http://localhost:8090/artifacts/key");
       HttpEntity e = new FileEntity(dataFile);
       httpput.setEntity(e);
+      httpput.setHeader(HttpHeaders.AUTHORIZATION, authenticatedToken);
       CloseableHttpResponse putResponse = httpclient.execute(httpput);
       try {
         Assert.assertEquals(202, putResponse.getStatusLine().getStatusCode());
       } finally {
         putResponse.close();
       }
+    }
+  }
+
+  @Test
+  public void testCacheUploadFailAuthentication() throws IOException {
+    File dataFile = new File(this.getClass().getClassLoader().getResource("cache_data/1473551747919").getFile());
+
+    logger.info("running testupload on file : {}", dataFile);
+    HttpPut httpput = new HttpPut("http://localhost:8090/artifacts/key");
+    HttpEntity e = new FileEntity(dataFile);
+    httpput.setEntity(e);
+    CloseableHttpResponse putResponse = httpclient.execute(httpput);
+    try {
+      Assert.assertEquals(401, putResponse.getStatusLine().getStatusCode());
+    } finally {
+      putResponse.close();
     }
   }
 
@@ -64,6 +84,7 @@ public class SingleServerIntegrationTest {
       HttpPut httpput = new HttpPut("http://localhost:8090/artifacts/key");
       HttpEntity e = new FileEntity(dataFile);
       httpput.setEntity(e);
+      httpput.setHeader(HttpHeaders.AUTHORIZATION, authenticatedToken);
       CloseableHttpResponse putResponse = httpclient.execute(httpput);
       try {
         Assert.assertEquals(202, putResponse.getStatusLine().getStatusCode());
@@ -126,6 +147,7 @@ public class SingleServerIntegrationTest {
       HttpPut httpput = new HttpPut("http://localhost:8090/artifacts/key");
       HttpEntity e = new FileEntity(dataFile);
       httpput.setEntity(e);
+      httpput.setHeader(HttpHeaders.AUTHORIZATION, authenticatedToken);
       CloseableHttpResponse putResponse = httpclient.execute(httpput);
       try {
         Assert.assertEquals(202, putResponse.getStatusLine().getStatusCode());
@@ -159,6 +181,7 @@ public class SingleServerIntegrationTest {
     HttpPut httpput = new HttpPut("http://localhost:8090/artifacts/key");
     HttpEntity e = new FileEntity(dataFile);
     httpput.setEntity(e);
+    httpput.setHeader(HttpHeaders.AUTHORIZATION, authenticatedToken);
     httpput.addHeader(new BasicHeader("X-Cache-Expiry-Seconds", "0")); // Expire keys immediately
     CloseableHttpResponse putResponse = httpclient.execute(httpput);
     try {

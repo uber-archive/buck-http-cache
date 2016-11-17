@@ -21,6 +21,8 @@ public final class BuckCacheConfiguration extends Configuration {
   private String storeProviderKlass;
   @Nonnull
   private DataStoreProviderConfig storeProviderConfig;
+  @Nonnull
+  private AuthenticationConfig authenticationConfig;
 
   public String getStoreProviderKlass() {
     return storeProviderKlass;
@@ -36,6 +38,14 @@ public final class BuckCacheConfiguration extends Configuration {
 
   public void setStoreProviderConfig(DataStoreProviderConfig storeProviderConfig) {
     this.storeProviderConfig = storeProviderConfig;
+  }
+
+  public AuthenticationConfig getAuthenticationConfig() {
+    return authenticationConfig;
+  }
+
+  public void setAuthenticationConfig(AuthenticationConfig authenticationConfig) {
+    this.authenticationConfig = authenticationConfig;
   }
 
   public String getThrottleLimit() {

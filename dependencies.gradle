@@ -17,6 +17,7 @@ def build = [
 
 def external = [
         dropwizard        : "io.dropwizard:dropwizard-core:${versions.dropwizardVersion}",
+        dropwizardAuth    : "io.dropwizard:dropwizard-auth:${versions.dropwizardVersion}",
         ignite            : "org.apache.ignite:ignite-core:${versions.igniteVersion}",
         junit             : "junit:junit:${versions.junitVersion}",
         httpClient        : "org.apache.httpcomponents:httpclient:${versions.httpClientVersion}",
