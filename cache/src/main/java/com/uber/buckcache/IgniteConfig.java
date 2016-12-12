@@ -5,110 +5,96 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.ignite.cache.CacheMode;
 
 public class IgniteConfig {
 
   @Nonnull
-  private String multicastIP;
+  private final String multicastIP;
   @Nonnull
-  private Integer multicastPort;
+  private final Integer multicastPort;
   @Nonnull
-  private CacheMode cacheMode;
+  private final CacheMode cacheMode;
   @Nonnull
-  private Integer cacheBackupCount;
+  private final Integer cacheBackupCount;
   @Nonnull
-  private TimeUnit expirationTimeUnit;
+  private final TimeUnit expirationTimeUnit;
   @Nonnull
-  private Long expirationTimeValue;
+  private final Long expirationTimeValue;
   @Nonnull
-  private Integer atomicSequencereserveSize;
+  private final Integer atomicSequenceReserveSize;
   @Nonnull
-  private String offHeapStorageSize;
+  private final String offHeapStorageSize;
   @Nonnull
-  private List<String> hostIPs;
+  private final List<String> hostIPs;
   @Nonnull
-  private String dnsLookupAddress;
+  private final String dnsLookupAddress;
+
+  @JsonCreator
+  public IgniteConfig(
+      @Nonnull @JsonProperty("multicastIP") String multicastIP,
+      @Nonnull @JsonProperty("multicastPort") Integer multicastPort,
+      @Nonnull @JsonProperty("cacheMode") CacheMode cacheMode,
+      @Nonnull @JsonProperty("cacheBackupCount") Integer cacheBackupCount,
+      @Nonnull @JsonProperty("expirationTimeUnit") TimeUnit expirationTimeUnit,
+      @Nonnull @JsonProperty("expirationTimeValue") Long expirationTimeValue,
+      @Nonnull @JsonProperty("atomicSequenceReserveSize") Integer atomicSequenceReserveSize,
+      @Nonnull @JsonProperty("offHeapStorageSize") String offHeapStorageSize,
+      @Nonnull @JsonProperty("hostIPs") List<String> hostIPs,
+      @Nonnull @JsonProperty("dnsLookupAddress") String dnsLookupAddress) {
+    this.multicastIP = multicastIP;
+    this.multicastPort = multicastPort;
+    this.cacheMode = cacheMode;
+    this.cacheBackupCount = cacheBackupCount;
+    this.expirationTimeUnit = expirationTimeUnit;
+    this.expirationTimeValue = expirationTimeValue;
+    this.atomicSequenceReserveSize = atomicSequenceReserveSize;
+    this.offHeapStorageSize = offHeapStorageSize;
+    this.hostIPs = hostIPs;
+    this.dnsLookupAddress = dnsLookupAddress;
+  }
 
   public List<String> getHostIPs() {
     return hostIPs;
-  }
-
-  public void setHostIPs(List<String> hostIPs) {
-    this.hostIPs = hostIPs;
   }
 
   public String getOffHeapStorageSize() {
     return offHeapStorageSize;
   }
 
-  public void setOffHeapStorageSize(String offHeapStorageSize) {
-    this.offHeapStorageSize = offHeapStorageSize;
-  }
-
   public String getMulticastIP() {
     return multicastIP;
-  }
-
-  public void setMulticastIP(String multicastIP) {
-    this.multicastIP = multicastIP;
   }
 
   public Integer getMulticastPort() {
     return multicastPort;
   }
 
-  public void setMulticastPort(Integer multicastPort) {
-    this.multicastPort = multicastPort;
-  }
-
   public CacheMode getCacheMode() {
     return cacheMode;
-  }
-
-  public void setCacheMode(CacheMode cacheMode) {
-    this.cacheMode = cacheMode;
   }
 
   public Integer getCacheBackupCount() {
     return cacheBackupCount;
   }
 
-  public void setCacheBackupCount(Integer cacheBackupCount) {
-    this.cacheBackupCount = cacheBackupCount;
-  }
-
   public TimeUnit getExpirationTimeUnit() {
     return expirationTimeUnit;
-  }
-
-  public void setExpirationTimeUnit(TimeUnit expirationTimeUnit) {
-    this.expirationTimeUnit = expirationTimeUnit;
   }
 
   public Long getExpirationTimeValue() {
     return expirationTimeValue;
   }
 
-  public void setExpirationTimeValue(Long expirationTimeValue) {
-    this.expirationTimeValue = expirationTimeValue;
-  }
-
-  public Integer getAtomicSequencereserveSize() {
-    return atomicSequencereserveSize;
-  }
-
-  public void setAtomicSequencereserveSize(Integer atomicSequencereserveSize) {
-    this.atomicSequencereserveSize = atomicSequencereserveSize;
+  public Integer getAtomicSequenceReserveSize() {
+    return atomicSequenceReserveSize;
   }
 
   public String getDnsLookupAddress() {
     return dnsLookupAddress;
-  }
-
-  public void setDnsLookupAddress(String dnsLookupAddress) {
-    this.dnsLookupAddress = dnsLookupAddress;
   }
 
   public String toString() {
