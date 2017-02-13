@@ -24,7 +24,7 @@ storeProviderConfig:
     cacheBackupCount: 1
     expirationTimeUnit: DAYS
     expirationTimeValue: 2
-    atomicSequencereserveSize: 10000
+    atomicSequenceReserveSize: 10000
     offHeapStorageSize: 40g # 40GB
 
 authenticationConfig:

@@ -15,16 +15,16 @@ throttleLimit: 500m
 storeProviderKlass: com.uber.buckcache.datastore.impl.ignite.IgniteDataStoreProvider
 
 storeProviderConfig:
-  config: 
+  config:
     multicastIP: 228.10.10.157
     multicastPort: 6734
-    hostIPs: 
+    hostIPs:
       - 127.0.0.1
     cacheMode: PARTITIONED
     cacheBackupCount: 1
     expirationTimeUnit: DAYS
     expirationTimeValue: 7
-    atomicSequencereserveSize: 10000
+    atomicSequenceReserveSize: 10000
     offHeapStorageSize: 40g # 40GB
 
 statsd:

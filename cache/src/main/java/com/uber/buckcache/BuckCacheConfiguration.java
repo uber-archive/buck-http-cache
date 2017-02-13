@@ -2,6 +2,7 @@ package com.uber.buckcache;
 
 import javax.annotation.Nonnull;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,68 +13,56 @@ import io.dropwizard.Configuration;
 public final class BuckCacheConfiguration extends Configuration {
 
   @Nonnull
-  private CacheInstanceMode mode;
+  private final CacheInstanceMode mode;
   @Nonnull
-  private StatsdConfig statsd;
+  private final StatsdConfig statsd;
   @Nonnull
-  private String throttleLimit;
+  private final String throttleLimit;
   @Nonnull
-  private String storeProviderKlass;
+  private final String storeProviderKlass;
   @Nonnull
-  private DataStoreProviderConfig storeProviderConfig;
+  private final DataStoreProviderConfig storeProviderConfig;
   @Nonnull
-  private AuthenticationConfig authenticationConfig;
+  private final AuthenticationConfig authenticationConfig;
+
+  @JsonCreator
+  public BuckCacheConfiguration(
+      @Nonnull @JsonProperty("mode") CacheInstanceMode mode,
+      @Nonnull @JsonProperty("statsd") StatsdConfig statsd,
+      @Nonnull @JsonProperty("throttleLimit") String throttleLimit,
+      @Nonnull @JsonProperty("storeProviderKlass") String storeProviderKlass,
+      @Nonnull @JsonProperty("storeProviderConfig") DataStoreProviderConfig storeProviderConfig,
+      @Nonnull @JsonProperty("authenticationConfig") AuthenticationConfig authenticationConfig) {
+    this.mode = mode;
+    this.statsd = statsd;
+    this.throttleLimit = throttleLimit;
+    this.storeProviderKlass = storeProviderKlass;
+    this.storeProviderConfig = storeProviderConfig;
+    this.authenticationConfig = authenticationConfig;
+  }
 
   public String getStoreProviderKlass() {
     return storeProviderKlass;
-  }
-
-  public void setStoreProviderKlass(String storeProviderKlass) {
-    this.storeProviderKlass = storeProviderKlass;
   }
 
   public DataStoreProviderConfig getStoreProviderConfig() {
     return storeProviderConfig;
   }
 
-  public void setStoreProviderConfig(DataStoreProviderConfig storeProviderConfig) {
-    this.storeProviderConfig = storeProviderConfig;
-  }
-
   public AuthenticationConfig getAuthenticationConfig() {
     return authenticationConfig;
-  }
-
-  public void setAuthenticationConfig(AuthenticationConfig authenticationConfig) {
-    this.authenticationConfig = authenticationConfig;
   }
 
   public String getThrottleLimit() {
     return throttleLimit;
   }
 
-  public void setThrottleLimit(String throttleLimit) {
-    this.throttleLimit = throttleLimit;
-  }
-
   public StatsdConfig getStatsd() {
     return statsd;
   }
 
-  public void setStatsd(StatsdConfig statsd) {
-    this.statsd = statsd;
-  }
-
-  @Nonnull
-  @JsonProperty
   public CacheInstanceMode getMode() {
     return mode;
-  }
-
-  @JsonProperty
-  @SuppressWarnings("unused")
-  public void setMode(CacheInstanceMode mode) {
-    this.mode = mode;
   }
 
   public String toString() {

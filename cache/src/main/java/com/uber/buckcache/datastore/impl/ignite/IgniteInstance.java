@@ -51,7 +51,7 @@ public class IgniteInstance {
         .addCacheConfiguration(this.config.getCacheMode(), this.config.getCacheBackupCount(),
             this.config.getExpirationTimeUnit(), this.config.getExpirationTimeValue(),
             this.config.getOffHeapStorageSize(), KEYS_CACHE_NAME, KEYS_REVERSE_CACHE_NAME, METADATA_CACHE_NAME)
-        .addAtomicSequenceConfig(config.getAtomicSequencereserveSize()).build();
+        .addAtomicSequenceConfig(config.getAtomicSequenceReserveSize()).build();
 
     logger.info("isClientMode : {}", mode == CacheInstanceMode.CLIENT);
     Ignition.setClientMode(mode == CacheInstanceMode.CLIENT);

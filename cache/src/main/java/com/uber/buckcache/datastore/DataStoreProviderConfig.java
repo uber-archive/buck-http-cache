@@ -2,20 +2,20 @@ package com.uber.buckcache.datastore;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class DataStoreProviderConfig {
 
-  private Map<String, Object> config;
+  private final Map<String, Object> config;
 
-  public Object getConfigValueForKey(String key) {
-    return config.get(key);
+  @JsonCreator
+  public DataStoreProviderConfig(@JsonProperty("config") Map<String, Object> config) {
+    this.config = config;
   }
 
   public Map<String, Object> getConfig() {
     return config;
-  }
-
-  public void setConfig(Map<String, Object> config) {
-    this.config = config;
   }
 
 }
