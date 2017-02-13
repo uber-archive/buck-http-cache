@@ -27,8 +27,7 @@ public class HttpHeaderAuthFilterTest {
     when(mockRequestContextWithHeader.getHeaders()).thenReturn(mockHeaders);
 
     mockRequestContextWithoutHeader = mock(ContainerRequestContext.class);
-    when(mockRequestContextWithoutHeader.getHeaders()).thenReturn(
-        new MultivaluedHashMap<String, String>());
+    when(mockRequestContextWithoutHeader.getHeaders()).thenReturn(new MultivaluedHashMap<>());
   }
 
   @Test

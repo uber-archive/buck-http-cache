@@ -27,6 +27,9 @@ storeProviderConfig:
     atomicSequenceReserveSize: 10000
     offHeapStorageSize: 40g # 40GB
 
+authenticationConfig:
+  tokens:
+
 statsd:
   enabled: false
 
