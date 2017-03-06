@@ -61,6 +61,7 @@ import com.uber.buckcache.utils.StatsDClient;
 public class BuckCacheResource {
   private static final Logger logger = LoggerFactory.getLogger(BuckCacheResource.class);
   private static final String X_CACHE_EXPIRY_SECONDS = "X-Cache-Expiry-Seconds";
+  private static final String X_CACHE_TAGS = "X-Cache-Tags";
 
   private final DataStoreProvider storeProvider;
   private final BytesRateLimiter rateLimiter;
@@ -68,6 +69,15 @@ public class BuckCacheResource {
   public BuckCacheResource(DataStoreProvider storeProvider, BytesRateLimiter rateLimiter) {
     this.rateLimiter = rateLimiter;
     this.storeProvider = storeProvider;
+  }
+
+  private static String getCacheKeyWithCustomizedParam(String key, String cacheTags) {
+    if (StringUtils.isEmpty(cacheTags)) {
+      System.out.println(key);
+      return key;
+    }
+    System.out.println(String.format("%s.%s", key, cacheTags));
+    return String.format("%s.%s", key, cacheTags);
   }
 
   @GET
@@ -82,8 +92,9 @@ public class BuckCacheResource {
   @GET
   @Path("key/{key}")
   @Produces(MediaType.APPLICATION_OCTET_STREAM)
-  public Response getCacheArtifact(@PathParam("key") String key) throws Exception {
-    StatsDClient.get().count(GET_CALL_COUNT, 1L);
+  public Response getCacheArtifact(@PathParam("key") String key,
+                                   @HeaderParam(X_CACHE_TAGS) String cacheTags) throws Exception {
+    StatsDClient.get().count(getCacheKeyWithCustomizedParam(GET_CALL_COUNT, cacheTags), 1L);
     CacheEntry cacheEntry;
     long start = System.currentTimeMillis();
 
@@ -99,13 +110,13 @@ public class BuckCacheResource {
       return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
     } catch (EntryNotFoundException ex) {
       logger.debug("Cache MISS", key);
-      StatsDClient.get().count(CACHE_MISS_COUNT, 1L);
+      StatsDClient.get().count(getCacheKeyWithCustomizedParam(CACHE_MISS_COUNT, cacheTags), 1L);
       StatsDClient.get().recordExecutionTimeToNow(GET_CALL_TIME, start);
       return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     logger.debug("Cache hit", key);
-    StatsDClient.get().count(CACHE_HIT_COUNT, 1L);
+    StatsDClient.get().count(getCacheKeyWithCustomizedParam(CACHE_HIT_COUNT, cacheTags), 1L);
     StatsDClient.get().recordExecutionTimeToNow(GET_CALL_TIME, start);
     return Response.ok(cacheEntry).build();
   }
@@ -139,7 +150,7 @@ public class BuckCacheResource {
         }
 
         StatsDClient.get().recordExecutionTimeToNow(PUT_CALL_TIME, start);
-        
+
         StatsDClient.get().count(INCOMING_BYTES_TOTAL_COUNT, putCacheEntry.getBytes());
         StatsDClient.get().recordExecutionTime(INCOMING_BYTES_PER_REQUEST, putCacheEntry.getBytes());
 
