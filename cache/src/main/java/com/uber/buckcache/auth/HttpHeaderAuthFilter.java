@@ -22,7 +22,7 @@ public class HttpHeaderAuthFilter extends AuthFilter {
   }
 
   public HttpHeaderAuthFilter(List<String> tokens) {
-    this.tokens = tokens;
+    this.tokens = tokens == null ? emptyList() : tokens;
   }
 
   @Override

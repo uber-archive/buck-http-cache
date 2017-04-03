@@ -73,10 +73,8 @@ public class BuckCacheResource {
 
   private static String getCacheKeyWithCustomizedParam(String key, String cacheTags) {
     if (StringUtils.isEmpty(cacheTags)) {
-      System.out.println(key);
       return key;
     }
-    System.out.println(String.format("%s.%s", key, cacheTags));
     return String.format("%s.%s", key, cacheTags);
   }
 
