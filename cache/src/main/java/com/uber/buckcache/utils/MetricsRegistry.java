@@ -4,6 +4,8 @@ public class MetricsRegistry {
   public static final double SAMPLE_RATE = 1;
   
   public static final String SUMMARY_CALL_COUNT = "summary_api_call_count";
+
+  public static final String CLUSTER_SIZE = "buck_cache_cluster_size";
   
   public static final String GET_CALL_COUNT = "get_api_call_count";
   public static final String GET_CALL_TIME = "get_api_call_time_taken";
@@ -28,6 +30,6 @@ public class MetricsRegistry {
   public static final String HEAP_TIME = "buck_cache_server_heap_usage_timer";
   public static final String OFF_HEAP_COUNT = "buck_cache_server_off_heap_usage";
   public static final String OFF_HEAP_TIME = "buck_cache_server_off_heap_usage_timer";
-  
+
   
 }

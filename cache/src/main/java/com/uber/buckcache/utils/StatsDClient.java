@@ -35,6 +35,10 @@ public class StatsDClient {
     underlyingClient.count(metricName, countValue, statsDConfig.getSampleRate());
   }
 
+  public void gauge(String metricName, long countValue) {
+    underlyingClient.gauge(metricName, countValue);
+  }
+
   public void recordExecutionTime(String metricName, long timeDifferenceInMillis) {
     underlyingClient.recordExecutionTime(metricName, timeDifferenceInMillis, statsDConfig.getSampleRate());
   }
