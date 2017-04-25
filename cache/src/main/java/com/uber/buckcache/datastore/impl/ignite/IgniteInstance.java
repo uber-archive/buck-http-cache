@@ -4,6 +4,7 @@ import static com.uber.buckcache.datastore.impl.ignite.IgniteConstants.KEYS_CACH
 import static com.uber.buckcache.datastore.impl.ignite.IgniteConstants.KEYS_REVERSE_CACHE_NAME;
 import static com.uber.buckcache.datastore.impl.ignite.IgniteConstants.METADATA_CACHE_NAME;
 import static com.uber.buckcache.datastore.impl.ignite.IgniteConstants.UNDERLYING_KEY_SEQUENCE_NAME;
+import static com.uber.buckcache.utils.MetricsRegistry.CLUSTER_SIZE;
 import static com.uber.buckcache.utils.MetricsRegistry.CPU_COUNT;
 import static com.uber.buckcache.utils.MetricsRegistry.CPU_TIME;
 import static com.uber.buckcache.utils.MetricsRegistry.HEAP_COUNT;
@@ -142,5 +143,7 @@ public class IgniteInstance {
 
     StatsDClient.get().count(OFF_HEAP_COUNT, offHeapUsage);
     StatsDClient.get().count(OFF_HEAP_TIME, offHeapUsage);
+
+    StatsDClient.get().gauge(CLUSTER_SIZE, ignite.cluster().hostNames().size());
   }
 }
