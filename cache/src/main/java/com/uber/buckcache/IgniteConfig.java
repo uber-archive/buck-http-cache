@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.ignite.cache.CacheMemoryMode;
 import org.apache.ignite.cache.CacheMode;
 
 public class IgniteConfig {
@@ -32,6 +33,8 @@ public class IgniteConfig {
   private final List<String> hostIPs;
   @Nonnull
   private final String dnsLookupAddress;
+  @Nonnull
+  private final CacheMemoryMode cacheMemoryMode;
 
   @JsonCreator
   public IgniteConfig(
@@ -44,7 +47,8 @@ public class IgniteConfig {
       @Nonnull @JsonProperty("atomicSequenceReserveSize") Integer atomicSequenceReserveSize,
       @Nonnull @JsonProperty("offHeapStorageSize") String offHeapStorageSize,
       @Nonnull @JsonProperty("hostIPs") List<String> hostIPs,
-      @Nonnull @JsonProperty("dnsLookupAddress") String dnsLookupAddress) {
+      @Nonnull @JsonProperty("dnsLookupAddress") String dnsLookupAddress,
+      @Nonnull @JsonProperty("cacheMemoryMode") CacheMemoryMode cacheMemoryMode) {
     this.multicastIP = multicastIP;
     this.multicastPort = multicastPort;
     this.cacheMode = cacheMode;
@@ -55,6 +59,7 @@ public class IgniteConfig {
     this.offHeapStorageSize = offHeapStorageSize;
     this.hostIPs = hostIPs;
     this.dnsLookupAddress = dnsLookupAddress;
+    this.cacheMemoryMode = cacheMemoryMode;
   }
 
   public List<String> getHostIPs() {
@@ -93,10 +98,13 @@ public class IgniteConfig {
     return atomicSequenceReserveSize;
   }
 
+  public CacheMemoryMode getCacheMemoryMode() {
+    return cacheMemoryMode;
+  }
+
   public String getDnsLookupAddress() {
     return dnsLookupAddress;
   }
-
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }

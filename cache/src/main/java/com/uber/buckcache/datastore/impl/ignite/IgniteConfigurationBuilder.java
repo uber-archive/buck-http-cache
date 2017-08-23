@@ -66,14 +66,14 @@ public class IgniteConfigurationBuilder {
   }
 
   public IgniteConfigurationBuilder addCacheConfiguration(CacheMode cacheMode, Integer backupCount,
-      TimeUnit expirationTimeUnit, Long expirationTimeValue, String offHeapMaxSize, String ...caches) {
+      TimeUnit expirationTimeUnit, Long expirationTimeValue, String offHeapMaxSize, CacheMemoryMode cacheMemoryMode, String ...caches) {
     
     CacheConfiguration[] cacheConfigs = new CacheConfiguration[caches.length];
     
     for (int i = 0; i < caches.length; i++) {
       CacheConfiguration cacheConfiguration = new CacheConfiguration(caches[i]);
       cacheConfiguration.setCacheMode(cacheMode);
-      cacheConfiguration.setMemoryMode(CacheMemoryMode.OFFHEAP_VALUES);
+      cacheConfiguration.setMemoryMode(cacheMemoryMode);
       cacheConfiguration.setStatisticsEnabled(true);
 
       String multiplier = offHeapMaxSize.substring(0, offHeapMaxSize.length() - 1);
