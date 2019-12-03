@@ -1,5 +1,7 @@
 # Buck HTTP Cache As a service. 
 
+（This project is deprecated and not maintained any more.）
+
 An Implementation of [Buck's HTTP Cache API](https://buckbuild.com/concept/http_cache_api.html) as a distributed cache service. 
 
 ## Quick start
